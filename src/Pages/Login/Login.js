@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
 import loginImg from '../../../src/assets/images/images/login.jpg'
+import { AuthContext } from '../../contexts/AuthProvider';
 
 
 const Login = () => {
+    
+    const {signIn} = useContext(AuthContext);
+    const [error, setError] = useState('');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        signIn(email, password)
+            .then((result) => {
+                const user = result.user;
+                console.log(user);
+                form.reset();
+              
+            })
+            .catch((error) => {
+                console.error(error);
+                setError(error.message);
+             });
+    };
+
     return (
         <div class="flex items-center min-h-screen bg-gray-50">
             <div class="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
@@ -31,7 +55,7 @@ const Login = () => {
                                     />
                                 </svg>
                             </div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <h1 class="mb-4 text-2xl font-bold text-center text-gray-700">
                                     LogIn
                                 </h1>
@@ -63,7 +87,7 @@ const Login = () => {
                                 >
                                     Login
                                 </button>
-                                <p className="text-red-500"></p>
+                                <p className="text-red-500">{error}</p>
                             </form>
 
                             <div class="mt-4  text-center">
