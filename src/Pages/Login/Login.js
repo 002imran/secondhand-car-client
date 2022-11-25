@@ -2,8 +2,9 @@ import React, { useContext, useState} from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import loginImg from '../../../src/assets/images/images/login.jpg'
 import { AuthContext } from '../../contexts/AuthProvider';
-import { FcGoogle } from 'react-icons/fc'
-import { GoogleAuthProvider } from 'firebase/auth';
+import { FcGoogle} from 'react-icons/fc'
+import { BsGithub} from 'react-icons/bs'
+import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 import toast from 'react-hot-toast'
 
 
@@ -16,6 +17,7 @@ const Login = () => {
     const location = useLocation();
 
     const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
     const from = location.state?.from?.pathname || '/';
 
     const handleGoogleSignIn = () => {
@@ -27,6 +29,15 @@ const Login = () => {
             })
             .catch(error => console.error(error))
     }
+
+    const handleGithubSignIn = () => {
+        providerLogin(githubProvider)
+            .then((result) => {
+                const user = result.user;
+                console.log(user);
+            })
+            .catch(error => console.error('error:', error))
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -119,8 +130,10 @@ const Login = () => {
                                     </span>
                                 </h3>
                             </div>
-                            <div className="text-3xl flex justify-center mt-2">
+                            <div className="text-3xl flex justify-center mt-2 gap-3">
                                 <FcGoogle title="Google" onClick={handleGoogleSignIn} />
+                                <BsGithub title="Github" onClick={handleGithubSignIn} />
+
                             </div>
                            
                         </div>
