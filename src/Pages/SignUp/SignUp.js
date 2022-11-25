@@ -1,6 +1,42 @@
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import signupImg from '../../../src/assets/images/images/signup.jpg';
+import { AuthContext } from '../../contexts/AuthProvider';
 const SignUp = () => {
+      const { createUser } = useContext(AuthContext);
+      const [error, setError] = useState('');
+      const handleSubmit = (event) => {
+
+        event.preventDefault();
+        const form = event.target;
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        const confirmPassword = form.confirmPassword.value;
+        // console.log(name, email, password, confirmPassword);
+
+        if (password.length < 6) {
+            setError("Password should be at least 6 Characters");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError("Password did not match");
+            return;
+        }
+
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                setError('');
+                form.reset();
+
+            })
+            .catch(e => {
+                console.error(e);
+                setError(e.message);
+            });
+    }
     
 
     return (
@@ -34,7 +70,7 @@ const SignUp = () => {
                                     />
                                 </svg>
                             </div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
                                     Sign up
                                 </h1>
@@ -81,7 +117,7 @@ const SignUp = () => {
                                 >
                                     Sign up
                                 </button>
-                                <p className='text-red-600'>  </p>
+                                <p className='text-red-600'>{error} </p>
                             </form>
 
                             <div className="mt-4 text-center">
@@ -89,7 +125,7 @@ const SignUp = () => {
                                     Already have an account?
                                     <span>
                                         <Link to="/login" className="text-blue-600 hover:underline">
-                                            LogIn.
+                                            LogIn Here.
                                         </Link>
                                     </span>
                                 </h3>

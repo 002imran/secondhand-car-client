@@ -53,6 +53,7 @@ const Login = () => {
                                         type="password"
                                         name="password"
                                     />
+                                    <p className='text-sm mt-2'>Forget Password?</p>
                                 </div>
 
                                 <button
