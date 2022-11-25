@@ -1,5 +1,4 @@
 import React from 'react';
-
 const CategoryCard = ({categoryName }) => {
     const {img, name} = categoryName;
     // console.log(categoryName);
