@@ -1,13 +1,30 @@
 import React, { useContext, useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import loginImg from '../../../src/assets/images/images/login.jpg'
 import { AuthContext } from '../../contexts/AuthProvider';
+import { FcGoogle } from 'react-icons/fc'
+import { GoogleAuthProvider } from 'firebase/auth';
 
 
 const Login = () => {
     
-    const {signIn} = useContext(AuthContext);
+    const { signIn, providerLogin } = useContext(AuthContext);
     const [error, setError] = useState('');
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const googleProvider = new GoogleAuthProvider();
+    const from = location.state?.from?.pathname || '/';
+
+    const handleGoogleSignIn = () => {
+        providerLogin(googleProvider)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+            })
+            .catch(error => console.error(error))
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -20,6 +37,8 @@ const Login = () => {
                 const user = result.user;
                 console.log(user);
                 form.reset();
+                setError('');
+                navigate(from, {replace: true})
               
             })
             .catch((error) => {
@@ -97,6 +116,9 @@ const Login = () => {
                                         <Link to="/signup">SignUp.</Link>
                                     </span>
                                 </h3>
+                            </div>
+                            <div className="text-3xl flex justify-center mt-2">
+                                <FcGoogle title="Google" onClick={handleGoogleSignIn} />
                             </div>
                            
                         </div>
