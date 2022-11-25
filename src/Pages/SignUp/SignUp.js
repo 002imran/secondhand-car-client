@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import signupImg from '../../../src/assets/images/images/signup.jpg';
 import { AuthContext } from '../../contexts/AuthProvider';
 const SignUp = () => {
@@ -28,6 +29,7 @@ const SignUp = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                toast('User Created Successfully')
                 setError('');
                 form.reset();
 

@@ -4,6 +4,7 @@ import loginImg from '../../../src/assets/images/images/login.jpg'
 import { AuthContext } from '../../contexts/AuthProvider';
 import { FcGoogle } from 'react-icons/fc'
 import { GoogleAuthProvider } from 'firebase/auth';
+import toast from 'react-hot-toast'
 
 
 const Login = () => {
@@ -21,6 +22,7 @@ const Login = () => {
         providerLogin(googleProvider)
             .then(result => {
                 const user = result.user;
+                toast('Logged In Successfully')
                 console.log(user);
             })
             .catch(error => console.error(error))
