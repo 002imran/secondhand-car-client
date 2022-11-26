@@ -53,7 +53,7 @@ const Navbar = () => {
                           {menuItems}
                         </ul>
                     </div> 
-                    <div className='sm:hidden md:flex items-center'>
+                    <div className='hidden md:flex items-center'>
                        <Link>
                          <img className='w-48 h-36 rounded-lg'  src={logo} alt=''/>
                        </Link>
@@ -65,7 +65,7 @@ const Navbar = () => {
                         {menuItems}
                     </ul>
                 </div>
-                    <div className='flex items-center justify-end md:hidden ml-24'>
+                    <div className='flex items-center justify-end sm:hidden ml-24'>
                         <Link>
                             <img className='w-48 h-36 rounded-lg' src={logo} alt='' />
                         </Link>
