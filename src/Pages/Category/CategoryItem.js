@@ -27,6 +27,7 @@ const CategoryItem = () => {
                 bookCar &&
                 <BookingModal
                     bookCar={bookCar}
+                    setBookCar={setBookCar}
                 ></BookingModal>
            }
             
