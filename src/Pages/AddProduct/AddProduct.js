@@ -1,6 +1,57 @@
-import React from 'react';
+// import React, { useContext } from 'react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+// import { AuthContext } from '../../contexts/AuthProvider';
 
 const AddProduct = () => {
+    const navigate = useNavigate();
+    const [carAdd, setCarAdd] = useState(null)
+
+    const handleCarAdd = event => {
+        event.preventDefault();
+        const form = event.target;
+        const name = form.name.value;
+        const price = form.price.value;
+        const condition = form.condition.value;
+        const location = form.location.value;
+        const phone = form.phone.value;
+        const purchase = form.purchase.value;
+        const description = form.description.value;
+
+        const addCar = {
+            name,
+            price,
+            condition,
+            location,
+            phone,
+            purchase,
+            description
+
+        }
+        // console.log(addCar);
+        fetch('http://localhost:5000/addproduct', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(addCar)
+
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    setCarAdd(null);
+                    toast.success("Added Succefully")
+
+                }
+                else {
+                    toast.error(data.message);
+                }
+
+            })
+    }
+
     return (
     
             <div className="flex items-center min-h-screen bg-gray-50">
@@ -12,84 +63,21 @@ const AddProduct = () => {
                         <div className="flex items-center justify-center p-6 sm:p-12 w-full md:p-36">
                         <div className="w-full">
 
-                                <form >
-                                    <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-                                        Add A Product
-                                    </h1>
-                                    <div>
-                                        <label className="block text-sm">Product Name</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Product Name"
-                                        />
-                                    </div>
-                                    <div className="mt-4">
-                                        <label className="block text-sm">Price</label>
-                                        <input
-                                            type="text"
-                                            name="price"
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Price"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mt-4 text-sm">Condition</label>
-                                        <input
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Condition"
-                                            type="text"
-                                            name="condition"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mt-4 text-sm">Mobile No</label>
-                                        <input
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Mobile Number"
-                                            type="number"
-                                            name="mobile"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mt-4 text-sm">Location</label>
-                                        <input
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Give Your Location"
-                                            type="text"
-                                            name="location"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mt-4 text-sm">Year Of Purchase</label>
-                                        <input
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Purches of Years"
-                                            type="text"
-                                            name="purchase"
-                                        />
-                                    </div>
+                            
+                            <form className="grid grid-cols-1 gap-3 mt-10" onSubmit={handleCarAdd}>
+                                <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
+                                    Add A Product
+                                </h1>
+                                <input type="name" name="name" placeholder="Car Name/Model"  className="input input-bordered w-full" />
+                                <input type="text" name="price" placeholder="Price"  className="input input-bordered w-full" />
+                                <input type="text" name="condition" placeholder="Condition" className="input input-bordered w-full" />
+                                <input type="location" name="location" placeholder="location"  className="input input-bordered w-full" />
+                                <input type="phone" name="phone" placeholder="Phone Number" className="input input-bordered w-full" />
+                                <input type="text" name="purchase" placeholder="Purchase" className="input input-bordered w-full" />
+                                <input type="text" name="description" placeholder="Description" className="input input-bordered w-full" />
 
-                                    <div>
-                                        <label className="block mt-4 text-sm">Description</label>
-                                        <input
-                                            className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                            placeholder="Description"
-                                            type="text"
-                                            name="description"
-                                        />
-                                    </div>
-                                    <button
-                                        className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
-                                        href="#"
-                                        type='submit'
-                                    >
-                                        Add Now
-                                    </button>
-                                    <p className='text-red-600'> </p>
-                                </form>
-
+                                <input className="btn btn-primary" type='submit' value='submit' />
+                            </form>
 
                          </div>
                         </div>

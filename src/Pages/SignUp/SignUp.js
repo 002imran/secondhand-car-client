@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import signupImg from '../../../src/assets/images/images/signup.jpg';
 import { AuthContext } from '../../contexts/AuthProvider';
 const SignUp = () => {
+        const navigate = useNavigate();
         const { createUser } = useContext(AuthContext);
         const [error, setError] = useState('');
         const handleSubmit = (event) => {
@@ -115,6 +116,7 @@ const SignUp = () => {
                                     className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
                                     href="#"
                                     type='submit'
+                                    onClick={()=> navigate('/')}
                                 >
                                     Sign up
                                 </button>
