@@ -1,10 +1,13 @@
 // import React, { useContext } from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthProvider';
 // import { AuthContext } from '../../contexts/AuthProvider';
 
 const AddProduct = () => {
+    const { user } = useContext(AuthContext);
+
     const navigate = useNavigate();
     const [carAdd, setCarAdd] = useState(null)
 
@@ -18,6 +21,7 @@ const AddProduct = () => {
         const phone = form.phone.value;
         const purchase = form.purchase.value;
         const description = form.description.value;
+        const email = form.email.value;
 
         const addCar = {
             name,
@@ -26,7 +30,8 @@ const AddProduct = () => {
             location,
             phone,
             purchase,
-            description
+            description,
+            email
 
         }
         // console.log(addCar);
@@ -75,6 +80,7 @@ const AddProduct = () => {
                                 <input type="phone" name="phone" placeholder="Phone Number" className="input input-bordered w-full" />
                                 <input type="text" name="purchase" placeholder="Purchase" className="input input-bordered w-full" />
                                 <input type="text" name="description" placeholder="Description" className="input input-bordered w-full" />
+                                <input type="email" name="email" placeholder="Email" defaultValue={user?.email} className="input input-bordered w-full" disabled />
 
                                 <input className="btn btn-primary" type='submit' value='submit' />
                             </form>

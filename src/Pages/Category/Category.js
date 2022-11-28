@@ -8,7 +8,7 @@ const Category = () => {
         fetch('http://localhost:5000/category')
         .then(res => res.json())
         .then(data => setCategories(data));
-    })
+    },[])
     return (
         <div>
             <h2 className='text-2xl my-5'>Browse Items By Category </h2>
