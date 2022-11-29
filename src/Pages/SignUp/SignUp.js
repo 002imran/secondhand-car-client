@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
-
 import signupImg from '../../../src/assets/images/images/signup.jpg';
 import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc'
 import { BsGithub } from 'react-icons/bs'
+import useToken from '../../hooks/useToken';
 
 const SignUp = () => {
     const {
@@ -21,14 +21,14 @@ const SignUp = () => {
     const { createUser, updateUser } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('');
     const [createdUserEmail, setCreatedUserEmail] = useState('');
-    
+    const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
+    if(token){
+        navigate('/')
+    }
 
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
-
-
-   
 
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
@@ -84,10 +84,12 @@ const SignUp = () => {
             .then(res => res.json())
             .then(data => {
                 setCreatedUserEmail(email);
+                // getUserToken(email);
 
             })
     }
 
+ 
    
 
 
@@ -195,11 +197,6 @@ const SignUp = () => {
                     </Link>
                 </p>
                 <div className="divider">OR</div>
-                {/* <input
-                    type="submit"
-                    value="CONTINUE WITH GOOGLE"
-                    className="btn btn-outline w-full"
-                /> */}
                  <div className="text-3xl flex justify-center mt-2 gap-3">
                         <FcGoogle title="Google" onClick={handleGoogleSignIn} />
                         <BsGithub title="Github" onClick={handleGithubSignIn} />

@@ -12,12 +12,16 @@ const MyProduct = () => {
     // },[])
 
     const {user} = useContext(AuthContext);
-    const url = `http://localhost:5000/myproduct?emial=${user?.email}`;
+    const url = `http://localhost:5000/myproduct?email=${user?.email}`;
 
     const { data: myproducts = [] } = useQuery({
         queryKey: ['myproducts', user?.emial],
         queryFn: async () => {
-            const res = await fetch(url);
+            const res = await fetch(url,{
+                headers:{
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
              
             const data = await res.json();
             return data;
@@ -52,7 +56,7 @@ const MyProduct = () => {
                 </thead>
                 <tbody>
                     {
-                        myproducts.map((product,i) =>
+                        myproducts.map((product, i) =>
                             <tr>
                                 <th>{i+1}</th>
                                 <td>{product.name}</td>

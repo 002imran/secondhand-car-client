@@ -61,7 +61,7 @@ const AddProduct = () => {
     
             <div className="flex items-center min-h-screen bg-gray-50">
                 
-                <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
+                <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl my-6">
               
                 <div className="flex flex-col md:flex-row">
                     
@@ -79,10 +79,10 @@ const AddProduct = () => {
                                 <input type="location" name="location" placeholder="location"  className="input input-bordered w-full" />
                                 <input type="phone" name="phone" placeholder="Phone Number" className="input input-bordered w-full" />
                                 <input type="text" name="purchase" placeholder="Purchase" className="input input-bordered w-full" />
-                                <input type="text" name="description" placeholder="Description" className="input input-bordered w-full" />
+                                <input type="text" name="description" placeholder="Description" className="input input-bordered w-full"/>
                                 <input type="email" name="email" placeholder="Email" defaultValue={user?.email} className="input input-bordered w-full" disabled />
 
-                                <input className="btn btn-primary" type='submit' value='submit' />
+                                <input className="btn btn-primary" type='submit' value='submit' onClick={()=>navigate('/myproduct')}/>
                             </form>
 
                          </div>

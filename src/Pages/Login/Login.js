@@ -6,19 +6,47 @@ import { FcGoogle} from 'react-icons/fc'
 import { BsGithub} from 'react-icons/bs'
 import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 import toast from 'react-hot-toast'
+import useToken from '../../hooks/useToken';
+import { useForm } from 'react-hook-form';
 
 
 const Login = () => {
     
-    const { signIn, providerLogin } = useContext(AuthContext);
-    const [error, setError] = useState('');
+        const { signIn, providerLogin } = useContext(AuthContext);
+        const googleProvider = new GoogleAuthProvider();
+        const githubProvider = new GithubAuthProvider();
+        const { register, formState: { errors }, handleSubmit } = useForm();
+        const [loginError, setLoginError] = useState('');
+        const [loginUserEmail, setLoginUserEmail] = useState('');
+        const [token] = useToken(loginUserEmail);
 
-    const navigate = useNavigate();
-    const location = useLocation();
+        const location = useLocation();
+        const navigate = useNavigate();
 
-    const googleProvider = new GoogleAuthProvider();
-    const githubProvider = new GithubAuthProvider();
-    const from = location.state?.from?.pathname || '/';
+        const from = location.state?.from?.pathname || '/';
+
+        if (token) {
+            navigate(from, { replace: true })
+        }
+
+
+        const handleLogin = (data) => {
+            console.log(data);
+            setLoginError('');
+            signIn(data.email, data.password)
+                .then(result => {
+                    const user = result.user;
+                    console.log(user);
+                    setLoginUserEmail(data.email);
+
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    setLoginError(error.message);
+                });
+        }
+
+       
 
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
@@ -39,40 +67,27 @@ const Login = () => {
             .catch(error => console.error('error:', error))
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const form = event.target;
-        const email = form.email.value;
-        const password = form.password.value;
-
-        signIn(email, password)
-            .then((result) => {
-                const user = result.user;
-                console.log(user);
-                form.reset();
-                setError('');
-                navigate(from, {replace: true})
-              
-            })
-            .catch((error) => {
-                console.error(error);
-                setError(error.message);
-             });
-    };
+    
 
     return (
-        <div class="flex items-center min-h-screen bg-gray-50">
-            <div class="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
-                <div class="flex flex-col md:flex-row">
-                    <div class="h-46 w-full md:h-auto md:w-1/2">
-                        <img class="object-cover w-full h-full" src={loginImg} alt="img" />
+       
+
+        <div className="flex items-center min-h-screen bg-gray-50">
+            <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
+                <div className="flex flex-col md:flex-row">
+                    <div className="h-46 w-full md:h-auto md:w-1/2">
+                        <img
+                            className="object-cover w-full h-full"
+                            src={loginImg}
+                            alt="img"
+                        />
                     </div>
-                    <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-                        <div class="w-full">
-                            <div class="flex justify-center">
+                    <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+                        <div className="w-full">
+                            <div className="flex justify-center">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    class="w-20 h-20 text-blue-600"
+                                    className="w-20 h-20 text-blue-600"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -87,55 +102,69 @@ const Login = () => {
                                     />
                                 </svg>
                             </div>
-                            <form onSubmit={handleSubmit}>
-                                <h1 class="mb-4 text-2xl font-bold text-center text-gray-700">
-                                    LogIn
-                                </h1>
+                            <form onSubmit={handleSubmit(handleLogin)}>
+                                
 
-                                <div class="mt-4">
-                                    <label class="block text-sm">Email</label>
+                                <div className="form-control w-full max-w-xs">
+                                    <label className="label">
+                                        <span className="label-text">Email</span>
+                                    </label>
                                     <input
                                         type="email"
-                                        name="email"
-                                        class="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        placeholder="Email Address"
+                                        {...register("email", {
+                                            required: "Email is required",
+
+                                        })}
+                                        placeholder=""
+                                        className="input input-bordered w-full max-w-xs"
                                     />
+                                    {errors.email && (
+                                        <p className="text-red-600">{errors.email?.message}</p>
+                                    )}
                                 </div>
-                                <div>
-                                    <label class="block mt-4 text-sm">Password</label>
+
+                                <div className="form-control w-full max-w-xs">
+                                    <label className="label">
+                                        <span className="label-text">Password</span>
+                                    </label>
+
                                     <input
-                                        class="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        placeholder="Password"
                                         type="password"
-                                        name="password"
+                                        {...register("password", {
+                                            required: "Password is required",
+                                            minLength: { value: 6, message: "Password must be 6 characters long" },
+                                            pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: "Password Must be Stronng" }
+                                        })}
+                                        className="input input-bordered w-full max-w-xs"
                                     />
-                                    <p className='text-sm mt-2'>Forget Password?</p>
                                 </div>
 
-                                <button
-                                    class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
-                                    href="#"
-                                    type="submit"
-                                >
-                                    Login
-                                </button>
-                                <p className="text-red-500">{error}</p>
-                            </form>
+                                {errors.password && (
+                                    <p className="text-red-600">{errors.password?.message}</p>
+                                )}
 
-                            <div class="mt-4  text-center">
-                                <h3 class="text-sm">
-                                    Don't have an account?
-                                    <span className="text-blue-500">
-                                        <Link to="/signup">SignUp.</Link>
-                                    </span>
-                                </h3>
-                            </div>
+                                <input
+                                    type="submit"
+                                    value="login"
+                                    className="block w-full  max-w-xs px-4 py-2 mt-4 text-sm font-medium leading-5 text-center
+                      text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg
+                       active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+
+                                />
+                                {loginError && <p className='text-red-600'>{loginError}</p>}
+                            </form>
+                            <p className="p-2 text-sm text-center">
+                                Don't have an account?
+                                <Link to="/signup" className="text-primary">
+                                    Signup
+                                </Link>
+                            </p>
+                            <div className="divider">OR</div>
                             <div className="text-3xl flex justify-center mt-2 gap-3">
                                 <FcGoogle title="Google" onClick={handleGoogleSignIn} />
                                 <BsGithub title="Github" onClick={handleGithubSignIn} />
 
                             </div>
-                           
                         </div>
                     </div>
                 </div>

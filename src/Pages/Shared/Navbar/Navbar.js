@@ -26,6 +26,9 @@ const Navbar = () => {
                         <Link to="">Dashboard</Link>
                     </li>
                     <li>
+                        <Link to='/addproduct'>Add Product</Link>
+                    </li>
+                    <li>
                         <Link onClick={handleLogOut}>SignOut</Link>
                     </li>
                 </>
