@@ -23,7 +23,7 @@ const Navbar = () => {
             {user?.uid ? (
                 <>
                     <li>
-                        <Link to="">Dashboard</Link>
+                        <Link to="/dashboard">Dashboard</Link>
                     </li>
                     <li>
                         <Link to='/addproduct'>Add Product</Link>
