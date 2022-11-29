@@ -1,45 +1,95 @@
-import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import signupImg from '../../../src/assets/images/images/signup.jpg';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
+
+import signupImg from '../../../src/assets/images/images/signup.jpg';
+import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
+import { FcGoogle } from 'react-icons/fc'
+import { BsGithub } from 'react-icons/bs'
+
 const SignUp = () => {
-        const navigate = useNavigate();
-        const { createUser } = useContext(AuthContext);
-        const [error, setError] = useState('');
-        const handleSubmit = (event) => {
+    const {
+        register,
+        formState: { errors },
+        handleSubmit
+    } = useForm();
 
-        event.preventDefault();
-        const form = event.target;
-        const name = form.name.value;
-        const email = form.email.value;
-        const password = form.password.value;
-        const confirmPassword = form.confirmPassword.value;
-        // console.log(name, email, password, confirmPassword);
+    const { providerLogin } = useContext(AuthContext);
 
-        if (password.length < 6) {
-            setError("Password should be at least 6 Characters");
-            return;
-        }
-        if (password !== confirmPassword) {
-            setError("Password did not match");
-            return;
-        }
+    const { createUser, updateUser } = useContext(AuthContext);
+    const [signUpError, setSignUPError] = useState('');
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+    
+    const navigate = useNavigate();
 
-        createUser(email, password)
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
+
+
+   
+
+    const handleGoogleSignIn = () => {
+        providerLogin(googleProvider)
             .then(result => {
                 const user = result.user;
-                toast('User Created Successfully');
-                setError('');
-                form.reset();
+                toast('Logged In Successfully')
+                console.log(user);
+            })
+            .catch(error => console.error(error))
+    }
+
+    const handleGithubSignIn = () => {
+        providerLogin(githubProvider)
+            .then((result) => {
+                const user = result.user;
+                console.log(user);
+            })
+            .catch(error => console.error('error:', error))
+    };
+    const handleSignUp = (data) => {
+        console.log(data);
+        setSignUPError('')
+        createUser(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                toast('User Created Successfully')
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => {
+                        saveUser(data.name, data.email) 
+                    })
+                    .catch(err => console.log(err));
+            })
+            .catch((error => {
+                console.error(error);
+                setSignUPError(error.message)
+            }))
+
+    }
+
+    const saveUser = (name, email) => {
+        const user = { name, email };
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                setCreatedUserEmail(email);
 
             })
-            .catch(e => {
-                console.error(e);
-                setError(e.message);
-            });
     }
-    
+
+   
+
 
     return (
         <div className="flex items-center min-h-screen bg-gray-50">
@@ -72,69 +122,91 @@ const SignUp = () => {
                                     />
                                 </svg>
                             </div>
-                            <form onSubmit={handleSubmit}>
-                                <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-                                    Sign up
-                                </h1>
-                                <div>
-                                    <label className="block text-sm">Name</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        placeholder="Name"
-                                    />
-                                </div>
-                                <div className="mt-4">
-                                    <label className="block text-sm">Email</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        placeholder="Email Address"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block mt-4 text-sm">Password</label>
-                                    <input
-                                        className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        placeholder="Password"
-                                        type="password"
-                                        name="password"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block mt-4 text-sm">Confirm Password</label>
-                                    <input
-                                        className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                        placeholder="Confirm Password"
-                                        type="password"
-                                        name="confirmPassword"
-                                    />
-                                </div>
-                                <button
-                                    className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
-                                    href="#"
-                                    type='submit'
-                                    onClick={()=> navigate('/')}
-                                >
-                                    Sign up
-                                </button>
-                                <p className='text-red-600'>{error} </p>
-                            </form>
-
-                            <div className="mt-4 text-center">
-                                <h3 className="text-sm">
-                                    Already have an account?
-                                    <span>
-                                        <Link to="/login" className="text-blue-600 hover:underline">
-                                            LogIn Here.
-                                        </Link>
-                                    </span>
-                                </h3>
-                            </div>
-                        </div>
+                <form onSubmit={handleSubmit(handleSignUp)}>
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Name</span>
+                        </label>
+                        <input
+                            type="text"
+                            {...register("name", {
+                                required: "Name is Required",
+                            })}
+                            placeholder=""
+                            className="input input-bordered w-full max-w-xs"
+                        />
+                        {errors.name && (
+                            <p className="text-red-600">{errors.name?.message}</p>
+                        )}
                     </div>
+
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Email</span>
+                        </label>
+                        <input
+                            type="email"
+                            {...register("email", {
+                                required: "Email is required",
+
+                            })}
+                            placeholder=""
+                            className="input input-bordered w-full max-w-xs"
+                        />
+                        {errors.email && (
+                            <p className="text-red-600">{errors.email?.message}</p>
+                        )}
+                    </div>
+
+                    <div className="form-control w-full max-w-xs">
+                        <label className="label">
+                            <span className="label-text">Password</span>
+                        </label>
+
+                        <input
+                            type="password"
+                            {...register("password", {
+                                required: "Password is required",
+                                minLength: { value: 6, message: "Password must be 6 characters long" },
+                                pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: "Password Must be Stronng" }
+                            })}
+                            className="input input-bordered w-full max-w-xs"
+                        />
+                    </div>
+
+                    {errors.password && (
+                        <p className="text-red-600">{errors.password?.message}</p>
+                    )}
+
+                    <input
+                        type="submit"
+                        value="sign up"
+                        className="block w-full  max-w-xs px-4 py-2 mt-4 text-sm font-medium leading-5 text-center
+                      text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg
+                       active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+                                 
+                                    />
+                    {signUpError && <p className='text-red-600'>{signUpError}</p>}
+                </form>
+                <p className="p-2 text-sm text-center">
+                    Already have an account?
+                    <Link to="/login" className="text-primary">
+                        Login
+                    </Link>
+                </p>
+                <div className="divider">OR</div>
+                {/* <input
+                    type="submit"
+                    value="CONTINUE WITH GOOGLE"
+                    className="btn btn-outline w-full"
+                /> */}
+                 <div className="text-3xl flex justify-center mt-2 gap-3">
+                        <FcGoogle title="Google" onClick={handleGoogleSignIn} />
+                        <BsGithub title="Github" onClick={handleGithubSignIn} />
+
+                </div>
+            </div>
+        </div>
                 </div>
             </div>
         </div>
