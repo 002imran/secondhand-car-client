@@ -19,6 +19,15 @@ const Navbar = () => {
             <li>
                 <Link to="/about">About</Link>
             </li>
+            <li>
+                <Link className="dropdown dropdown-end">
+                <Link>Options</Link>
+                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><Link to='/signup'>User Account</Link></li>
+                        <li><Link to='/selleraccount'>Seller Account</Link></li>
+                    </ul>
+                </Link>
+            </li>
 
             {user?.uid ? (
                 <>
@@ -36,10 +45,16 @@ const Navbar = () => {
             ):(
                     <li>
                         <Link to="/login">Login</Link>
+                       
+                        
                     </li>
+                
+
+                
             ) }
            
            
+            
            
         </>
     )

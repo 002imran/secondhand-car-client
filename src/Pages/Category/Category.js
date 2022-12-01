@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CategoryCard from './CategoryCard';
+import axios from 'axios';
+import { error } from 'daisyui/src/colors';
+
 
 const Category = () => {
     const [categories, setCategories ] = useState([]);
+    const [isError, setError] = useState("");
+    // useEffect(()=>{
+    //     fetch('http://localhost:5000/category')
+    //     .then(res => res.json())
+    //     .then(data => setCategories(data));
+    // },[])
+
     useEffect(()=>{
-        fetch('http://localhost:5000/category')
-        .then(res => res.json())
-        .then(data => setCategories(data));
-    },[])
+        axios.get('http://localhost:5000/category')
+        .then((res)=> setCategories(res.data))
+        .catch((error)=> setError(error.message))
+    },[]);
+    
     return (
         <div>
             <h2 className='text-2xl my-5'>Browse Items By Category </h2>
