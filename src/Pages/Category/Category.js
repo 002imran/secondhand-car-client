@@ -9,13 +9,13 @@ const Category = () => {
     const [categories, setCategories ] = useState([]);
     const [isError, setError] = useState("");
     // useEffect(()=>{
-    //     fetch('http://localhost:5000/category')
+    //     fetch('https://secondhand-car-server-side.vercel.app/category')
     //     .then(res => res.json())
     //     .then(data => setCategories(data));
     // },[])
 
     useEffect(()=>{
-        axios.get('http://localhost:5000/category')
+        axios.get('https://secondhand-car-server-side.vercel.app/category')
         .then((res)=> setCategories(res.data))
         .catch((error)=> setError(error.message))
     },[]);

@@ -16,12 +16,12 @@ const Subscribe = () => {
                     <div class="items-center justify-between py-10 px-5 bg-white shadow-2xl rounded-lg mx-auto text-center">
                         <div class="px-2 -mt-6">
                             <div class="text-center">
-                                <h1 class="font-normal text-3xl text-grey-800 font-medium leading-loose my-3 w-full">Get touch
-                                    with us</h1>
+                                <h1 class="font-normal text-3xl text-grey-800 font-medium leading-loose my-3 w-full">Get In Touch
+                                    With Us!</h1>
                                 <div class="w-full text-center">
                                     <form action="#">
                                         <div class="max-w-sm mx-auto p-1 pr-0 flex items-center">
-                                            <input type="email" placeholder="yourmail@example.com"
+                                            <input type="email" placeholder="give your email"
                                                 class="flex-1 appearance-none rounded shadow p-3 text-grey-dark mr-2 focus:outline-none" />
                                                 <button type="submit"
                                                     class="bg-blue-600 text-white text-base font-semibold rounded-md shadow-md hover:bg-indigo-600 p-3">

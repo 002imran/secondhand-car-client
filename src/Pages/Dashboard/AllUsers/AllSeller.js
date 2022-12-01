@@ -13,7 +13,7 @@ const AllSeller = () => {
     const { data: sellerusers = [], isLoading, refetch } = useQuery({
         queryKey: ['sellerusers'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/sellerusers');
+            const res = await fetch('https://secondhand-car-server-side.vercel.app/sellerusers');
             const data = await res.json();
             return data;
         }
@@ -21,7 +21,7 @@ const AllSeller = () => {
 
 
     const handleMakeAdmin = id => {
-        fetch(`http://localhost:5000/sellerusers/admin/${id}`, {
+        fetch(`https://secondhand-car-server-side.vercel.app/sellerusers/admin/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -38,7 +38,7 @@ const AllSeller = () => {
 
 
     const handleDeleteUser = user => {
-        fetch(`http://localhost:5000/sellerusers/${user._id}`, {
+        fetch(`https://secondhand-car-server-side.vercel.app/sellerusers/${user._id}`, {
             method: 'DELETE',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`

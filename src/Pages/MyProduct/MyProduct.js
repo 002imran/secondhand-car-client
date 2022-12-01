@@ -6,13 +6,13 @@ import MyProductList from './MyProductList';
 const MyProduct = () => {
     // const [myProducts, setMyProducts] = useState([]);
     // useEffect(() => {
-    //     fetch('http://localhost:5000/myproduct')
+    //     fetch('https://secondhand-car-server-side.vercel.app/myproduct')
     //         .then(res => res.json())
     //         .then(data => setMyProducts(data));
     // },[])
 
     const {user} = useContext(AuthContext);
-    const url = `http://localhost:5000/myproduct?email=${user?.email}`;
+    const url = `https://secondhand-car-server-side.vercel.app/myproduct?email=${user?.email}`;
 
     const { data: myproducts = [] } = useQuery({
         queryKey: ['myproducts', user?.emial],

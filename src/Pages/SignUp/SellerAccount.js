@@ -74,7 +74,7 @@ const SellerAccount = () => {
 
     const saveUser = (name, email) => {
         const user = { name, email };
-        fetch('http://localhost:5000/sellerusers', {
+        fetch('https://secondhand-car-server-side.vercel.app/sellerusers', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

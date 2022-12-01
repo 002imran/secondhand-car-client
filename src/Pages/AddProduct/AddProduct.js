@@ -35,7 +35,7 @@ const AddProduct = () => {
 
         }
         // console.log(addCar);
-        fetch('http://localhost:5000/addproduct', {
+        fetch('https://secondhand-car-server-side.vercel.app/addproduct', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
