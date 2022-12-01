@@ -49,7 +49,7 @@ const MyProduct = () => {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Car-Model</th>
+                        <th>Car-Name</th>
                         <th>Price</th>
                         <th>Purchase</th>
                     </tr>

@@ -22,7 +22,7 @@ const Category = () => {
     
     return (
         <div>
-            <h2 className='text-2xl my-5'>Browse Items By Category </h2>
+            <h2 className='text-4xl my-10 text-center text-black '>Browse Items By Category </h2>
           
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           

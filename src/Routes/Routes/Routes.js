@@ -8,6 +8,7 @@ import Category from '../../Pages/Category/Category';
 import CategoryItem from '../../Pages/Category/CategoryItem';
 import AllSeller from '../../Pages/Dashboard/AllUsers/AllSeller';
 import AllUsers from '../../Pages/Dashboard/AllUsers/AllUsers';
+import MyOrders from '../../Pages/Dashboard/AllUsers/MyOrders';
 import Error from '../../Pages/Error/Error';
 import Home from '../../Pages/Home/Home/Home';
 import Login from '../../Pages/Login/Login';
@@ -48,11 +49,11 @@ const router = createBrowserRouter([
                 element: <PrivateRoute> <CategoryItem></CategoryItem></PrivateRoute>,
                 loader:({params}) => fetch(`http://localhost:5000/category/${params.id}`),
 
-            }
-            // {
-            //     path:'/addproduct',
-            //     element: <AddProduct></AddProduct>
-            // },
+            },
+            {
+                path:'/addproduct',
+                element: <AddProduct></AddProduct>
+            },
             // {
             //     path:'/myproduct',
             //     element: <MyProduct></MyProduct>
@@ -66,9 +67,13 @@ const router = createBrowserRouter([
         errorElement: <Error></Error>,
         children:[
             {
-                path:'/dashboard/myproducts',
-                element: <MyProduct></MyProduct>
+                path:'/dashboard/myorders',
+                element: <MyOrders></MyOrders>
             },
+            {
+                 path:'/dashboard/myproducts',
+                 element: <MyProduct></MyProduct>
+             },
             {
                 path: '/dashboard/allusers',
                 element: <AdminRoute><AllUsers></AllUsers></AdminRoute>

@@ -12,6 +12,7 @@ const BookingModal = ({ bookCar, setBookCar }) => {
         event.preventDefault();
         const form = event.target;
         const name = form.name.value;
+        const carName = form.carName.value;
         const email = form.email.value;
         const price = form.price.value;
         const location = form.location.value;
@@ -20,6 +21,7 @@ const BookingModal = ({ bookCar, setBookCar }) => {
 
         const bookingCar = {
             name,
+            carName,
             email,
             price,
             location,
@@ -61,6 +63,7 @@ const BookingModal = ({ bookCar, setBookCar }) => {
                     <h3 className="text-lg font-bold">Model : {carName}</h3>
                     <form className="grid grid-cols-1 gap-3 mt-10" onSubmit={handleCarBooking}>
                         <input type="name" name="name" placeholder="Your Name" defaultValue={user?.displayName} className="input input-bordered w-full" disabled/>
+                        <input type="name" name="carName" placeholder="Car Name" defaultValue={carName} className="input input-bordered w-full" disabled/>
                         <input type="email" name="email" placeholder="Email" defaultValue={user?.email} className="input input-bordered w-full" disabled />
                         <input type="text" name="price" placeholder="Price" defaultValue={resellPrice} className="input input-bordered w-full" disabled />
                         <input type="text" name="location" placeholder="location" defaultValue={location} className="input input-bordered w-full" disabled />

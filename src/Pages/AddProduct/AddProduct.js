@@ -82,7 +82,7 @@ const AddProduct = () => {
                                 <input type="text" name="description" placeholder="Description" className="input input-bordered w-full"/>
                                 <input type="email" name="email" placeholder="Email" defaultValue={user?.email} className="input input-bordered w-full" disabled />
 
-                                <input className="btn btn-primary" type='submit' value='submit' onClick={()=>navigate('/myproduct')}/>
+                                <input className="btn btn-primary" type='submit' value='submit' onClick={()=>navigate('/dashboard/myproducts')}/>
                             </form>
 
                          </div>
